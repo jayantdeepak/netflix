@@ -17,23 +17,22 @@ const Login = () => {
     let [errmsg,seterrmsg]=useState(null)
     let email=useRef(null)
     let password=useRef(null)
- let name=useRef(null)
+    let name=useRef(null)
+
     function toogelsignin(){
-        setsignedin(!isSignedin)
-        
-       
-    }
+        setsignedin(!isSignedin)}
+
+
     function submitform(e){
       let msg=  chechValidate(email.current.value,password.current.value)
-        
         msg?seterrmsg(msg):seterrmsg(null)
         if (msg !== null)return
         if(isSignedin){
         
 
 
-createUserWithEmailAndPassword(auth, email.current.value,password.current.value)
-  .then((userCredential) => {
+      createUserWithEmailAndPassword(auth, email.current.value,password.current.value)
+     .then((userCredential) => {
     // Signed up 
     const user = userCredential.user;
    let {uid ,displayName,email}=user
@@ -42,7 +41,8 @@ createUserWithEmailAndPassword(auth, email.current.value,password.current.value)
 updateProfile(user, {
   displayName: name.current.value, photoURL: "https://example.com/jane-q-user/profile.jpg"
 }).then(() => {
-  Dispatch(adduser({uid:uid,displayName:name.current.value,email:email}))
+  let {uid ,displayName,photoURL,email}=user
+  Dispatch(adduser({uid:uid,displayName:name.current.value,photoURL:photoURL,email:email}))
   navigate("/browse")
   // Profile updated!
   // ...
@@ -72,8 +72,8 @@ else{
     // login 
     const user = userCredential.user;
     // console.log(user)
-    let {uid ,displayName,email}=user
-    Dispatch(adduser({uid:uid,displayName:displayName,email:email}))
+    let {uid ,displayName,photoURL,email}=user
+    Dispatch(adduser({uid:uid,displayName:displayName,photoURL:photoURL,email:email}))
   
     navigate("/browse")
   
